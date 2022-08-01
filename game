@@ -1,0 +1,168 @@
+# blackjack
+import random
+import time
+spare = []
+cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"] * 16
+print("We are using 4 deck of cards.")
+print("After this, you can type hit or stand to take a card or not.")
+
+
+def shuffle(times):
+    a1 = 0
+    while a1 < times * len(cards):
+        ram = random.randint(0, len(cards) - 1)
+        cards.append(cards[ram])
+        del cards[ram]
+        a1 += 1
+
+
+shuffle(5)
+while True:
+    input("Are you ready?(Enter)")
+    a = 0
+    total1 = 0
+    total2 = 0
+    yours = []
+    dealers = []
+    yours.append(cards[0])
+    del cards[0]
+    dealers.append(cards[0])
+    del cards[0]
+    yours.append(cards[0])
+    del cards[0]
+    dealers.append("?")
+    d1 = cards[0]
+    del cards[0]
+    while True:
+        if yours[a] == "J" or yours[a] == "Q" or yours[a] == "K":
+            total1 += 10
+        elif yours[a] == "A":
+            if total1 > 10:
+                total1 += 1
+            else:
+                total1 += 11
+        else:
+            total1 += int(yours[a])
+        a += 1
+        if a >= len(yours):
+            break
+    if dealers[0] == "A":
+        total2 += 11
+    if dealers[0] == "10" or d1 == "J" or d1 == "Q" or d1 == "K":
+        total2 += 10
+    if d1 == "A":
+        total2 += 11
+    if d1 == "10" or d1 == "J" or d1 == "Q" or d1 == "K":
+        total2 += 10
+    print("your cards: ", yours)
+    print("dealer's cards: ", dealers)
+    if total2 == 21:
+        print("Blackjack! Dealer wins!")
+    elif total1 == 21:
+        print("Blackjack! Player wins!")
+    else:
+        while True:
+            ans = input()
+            if ans == "hit" or total1 > 21:
+                yours.append(cards[0])
+                del cards[0]
+                print("your cards: ", yours)
+                print("dealer's cards: ", dealers)
+                a = 0
+                total1 = 0
+                while True:
+                    if yours[a] == "J" or yours[a] == "Q" or yours[a] == "K":
+                        total1 += 10
+                    elif yours[a] == "A":
+                        if total1 > 10:
+                            total1 += 1
+                        else:
+                            total1 += 11
+                    else:
+                        total1 += int(yours[a])
+                    a += 1
+                    if a >= len(yours):
+                        break
+            if ans == "stand":
+                break
+        del dealers[1]
+        dealers.append(d1)
+        print("your cards: ", yours)
+        print("dealer's cards: ", dealers)
+        a = 0
+        total1 = 0
+        total2 = 0
+        while True:
+            if yours[a] == "J" or yours[a] == "Q" or yours[a] == "K":
+                total1 += 10
+            elif yours[a] == "A":
+                if total1 > 10:
+                    total1 += 1
+                else:
+                    total1 += 11
+            else:
+                total1 += int(yours[a])
+            a += 1
+            if a >= len(yours):
+                break
+        a = 0
+        while True:
+            if dealers[a] == "J" or dealers[a] == "Q" or dealers[a] == "K":
+                total2 += 10
+            elif dealers[a] == "A":
+                if total2 > 10:
+                    total2 += 1
+                else:
+                    total2 += 11
+            else:
+                total2 += int(dealers[a])
+            a += 1
+            if a >= len(dealers):
+                break
+        while True:
+            time.sleep(1)
+            if total2 > 16 or total1 > 21:
+                break
+            dealers.append(cards[0])
+            del cards[0]
+            print("your cards: ", yours)
+            print("dealer's cards: ", dealers)
+            a = 0
+            total2 = 0
+            while True:
+                if dealers[a] == "J" or dealers[a] == "Q" or dealers[a] == "K":
+                    total2 += 10
+                elif dealers[a] == "A":
+                    if total2 > 10:
+                        total2 += 1
+                    else:
+                        total2 += 11
+                else:
+                    total2 += int(dealers[a])
+                a += 1
+                if a >= len(dealers):
+                    break
+    if total1 > total2:
+        print("Player wins!")
+    elif not total1 >= total2 and total2 <= 21:
+        print("Dealer wins!")
+    else:
+        print("Push!")
+    a = 0
+    while a < len(yours):
+        spare.append(yours[a])
+        a += 1
+    a = 0
+    while a < len(dealers):
+        spare.append(dealers[a])
+        a += 1
+    del yours[0:]
+    del dealers[0:]
+    if len(spare) >= 104:
+        a = 0
+        while a < len(spare):
+            cards.append(spare[a])
+            a += 1
+        print("Shuffling...")
+        shuffle(5)
+        time.sleep(2)
